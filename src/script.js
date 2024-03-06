@@ -52,8 +52,8 @@ window.addEventListener('resize', () => {
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(25, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(1.5, 0, 6);
+const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100);
+camera.position.set(0, 0, 6);
 scene.add(camera);
 
 // Controls
@@ -80,7 +80,8 @@ const textureLoader = new THREE.TextureLoader();
 const textures = [
 	textureLoader.load('/textures/particles/01.png'),
 	textureLoader.load('/textures/particles/02.png'),
-	textureLoader.load('/textures/particles/03.png')
+	textureLoader.load('/textures/particles/03.png'),
+	textureLoader.load('/textures/particles/04.png')
 ];
 
 const createFirework = (fireworkParams) => {
@@ -88,6 +89,7 @@ const createFirework = (fireworkParams) => {
 
 	// Geometry
 	const positionsArray = new Float32Array(count * 3);
+	const positionsSphereArray = new Float32Array(count * 3);
 	const sizesArray = new Float32Array(count);
 	const timeMultipliersArray = new Float32Array(count);
 
@@ -103,9 +105,13 @@ const createFirework = (fireworkParams) => {
 		const coorPosition = new THREE.Vector3();
 		coorPosition.setFromSpherical(spherical);
 
-		positionsArray[i3] = coorPosition.x;
-		positionsArray[i3 + 1] = coorPosition.y;
-		positionsArray[i3 + 2] = coorPosition.z;
+		positionsSphereArray[i3] = coorPosition.x;
+		positionsSphereArray[i3 + 1] = coorPosition.y;
+		positionsSphereArray[i3 + 2] = coorPosition.z;
+
+		positionsArray[i3] = position.x;
+		positionsArray[i3 + 1] = position.y;
+		positionsArray[i3 + 2] = position.z;
 
 		sizesArray[i] = Math.random();
 
@@ -114,6 +120,11 @@ const createFirework = (fireworkParams) => {
 
 	const geometry = new THREE.BufferGeometry();
 	geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsArray, 3));
+	geometry.setAttribute(
+		'aSpherePosition',
+		new THREE.Float32BufferAttribute(positionsSphereArray, 3)
+	);
+
 	geometry.setAttribute('aSize', new THREE.Float32BufferAttribute(positionsArray, 1));
 	geometry.setAttribute(
 		'aTimeMultiplier',
@@ -143,6 +154,17 @@ const createFirework = (fireworkParams) => {
 	firework.position.copy(position);
 	scene.add(firework);
 
+	// Sound
+	// const listener = new THREE.AudioListener();
+	// camera.add(listener);
+	// const sound = new THREE.Audio(listener);
+	// const audioLoader = new THREE.AudioLoader();
+	// audioLoader.load('/sounds/firework.mp3', function (buffer) {
+	// 	sound.setBuffer(buffer);
+	// 	sound.setVolume(0.5);
+	// 	sound.play();
+	// });
+
 	// Destroy
 	const destroy = () => {
 		scene.remove(firework);
@@ -158,6 +180,7 @@ const createFirework = (fireworkParams) => {
 		duration: 3,
 		ease: 'linear',
 		onComplete: () => {
+			// sound.stop();
 			destroy();
 		}
 	});
@@ -165,11 +188,12 @@ const createFirework = (fireworkParams) => {
 
 const createRandomFirework = () => {
 	const count = Math.round(400 + Math.random() * 1000);
-	const position = new THREE.Vector3(
-		(Math.random() - 0.5) * 2,
-		Math.random(),
-		(Math.random() - 0.5) * 2
-	);
+	const position = new THREE.Vector3((Math.random() - 0.5) * 2, -0.5, (Math.random() - 0.5) * 2);
+	// const position = new THREE.Vector3(
+	// 	(Math.random() - 0.5) * 2,
+	// 	Math.random(),
+	// 	(Math.random() - 0.5) * 2
+	// );
 	const size = 0.1 + Math.random() * 0.1;
 	const texture = textures[Math.floor(Math.random() * textures.length)];
 	const radius = 0.5 + Math.random();
