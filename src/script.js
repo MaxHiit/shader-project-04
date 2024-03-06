@@ -102,12 +102,12 @@ const createFirework = (fireworkParams) => {
 			Math.random() * Math.PI * 2
 		);
 
-		const coorPosition = new THREE.Vector3();
-		coorPosition.setFromSpherical(spherical);
+		const sphericalPosition = new THREE.Vector3();
+		sphericalPosition.setFromSpherical(spherical);
 
-		positionsSphereArray[i3] = coorPosition.x;
-		positionsSphereArray[i3 + 1] = coorPosition.y;
-		positionsSphereArray[i3 + 2] = coorPosition.z;
+		positionsSphereArray[i3] = sphericalPosition.x;
+		positionsSphereArray[i3 + 1] = sphericalPosition.y;
+		positionsSphereArray[i3 + 2] = sphericalPosition.z;
 
 		positionsArray[i3] = position.x;
 		positionsArray[i3 + 1] = position.y;
@@ -189,11 +189,6 @@ const createFirework = (fireworkParams) => {
 const createRandomFirework = () => {
 	const count = Math.round(400 + Math.random() * 1000);
 	const position = new THREE.Vector3((Math.random() - 0.5) * 2, -0.5, (Math.random() - 0.5) * 2);
-	// const position = new THREE.Vector3(
-	// 	(Math.random() - 0.5) * 2,
-	// 	Math.random(),
-	// 	(Math.random() - 0.5) * 2
-	// );
 	const size = 0.1 + Math.random() * 0.1;
 	const texture = textures[Math.floor(Math.random() * textures.length)];
 	const radius = 0.5 + Math.random();
