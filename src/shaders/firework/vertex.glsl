@@ -1,5 +1,3 @@
-#define PI  3.141592653589793
-
 uniform float uSize;
 uniform vec2 uResolution;
 uniform float uProgress;
@@ -15,7 +13,6 @@ void main(){
     float progress = uProgress * aTimeMultiplier;
     vec3 newPosition = position;
 
-
     // Launching
     float launchingProgress = remap(progress, 0.0, 0.3, 0.0, 1.0);
     launchingProgress = clamp(launchingProgress, 0.0, 1.0);
@@ -23,7 +20,7 @@ void main(){
     newPosition.y += launchingProgress * 0.8;
 
     // Exploding
-    float explodingProgress = remap(progress, 0.3, 0.35, 0.0, 1.0);
+    float explodingProgress = remap(progress, 0.3, 0.4, 0.0, 1.0);
     explodingProgress = clamp(explodingProgress, 0.0, 1.0);
     explodingProgress = 1.0 - pow(1.0 - explodingProgress, 3.0);
     newPosition += aSpherePosition * explodingProgress;
@@ -35,8 +32,8 @@ void main(){
     newPosition.y -= fallingProgress * 0.2;
 
     // Scaling
-    float sizeOpeningProgress = remap(progress, 0.0, 0.325, 0.0, 1.0);
-    float sizeClosingProgress = remap(progress, 0.325, 1.0, 1.0, 0.0);
+    float sizeOpeningProgress = remap(progress, 0.0, 0.425, 0.0, 1.0);
+    float sizeClosingProgress = remap(progress, 0.425, 1.0, 1.0, 0.0);
     float sizeProgress = min(sizeOpeningProgress, sizeClosingProgress);
     sizeProgress = clamp(sizeProgress, 0.0, 1.0);
 
